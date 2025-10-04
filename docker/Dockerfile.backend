@@ -5,17 +5,20 @@ WORKDIR /usr/src/app
 # Install pnpm globally
 RUN npm install -g pnpm
 
-# Install dependencies
-COPY package*.json ./
-RUN pnpm install
-
-# Copy rest of the code
+# Copy entire monorepo first (important!)
 COPY . .
 
-# Generate prisma client
+# Install dependencies
+RUN pnpm install
+
+# Accept DB URL and set it for prisma
+ARG DB_URL
+ENV DATABASE_URL=$DB_URL
+
+# Generate Prisma client (inside packages/prisma)
 RUN pnpm run generate:db
 
-# Build typescript -> dist/
+# Build the backend (TypeScript → dist)
 RUN pnpm run build:backend
 
 EXPOSE 3002

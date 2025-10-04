@@ -26,6 +26,7 @@ jobs:
                 file: ./docker/Dockerfile.backend
                 push: true
                 tags: saksham251/todo-app-backend:${{github.sha}}
-            ## Steps  to deploy this to a VM
+                build-args: |
+                  DB_URL=${{ secrets.DATABASE_URL }}
             
      
