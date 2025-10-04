@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
 # Accept build-time database URL
-ARG DATABASE_URL
+ARG DB_URL
 WORKDIR /usr/src/app
 
 # Install dependencies
@@ -15,7 +15,7 @@ COPY . .
 RUN pnpm run generate:db
 
 # Run turbo build filtered for frontend (Next.js app)
-RUN DATABASE_URL=$DATABASE_URL pnpm exec turbo build --filter=web...
+RUN DB_URL=$DB_URL pnpm exec turbo build --filter=web...
 
 EXPOSE 3000
 
