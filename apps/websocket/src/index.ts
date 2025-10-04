@@ -22,5 +22,5 @@ wss.on("connection",async (ws)=>{
         console.log("Client Disconnected");
     });
 
-    ws.send("👋 Welcome! You are connected to WebSocket server.")
+    ws.send("Welcome! You are connected to WebSocket server.")
 });
