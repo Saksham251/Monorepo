@@ -2,6 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 # Install dependencies
 COPY package*.json ./
 RUN pnpm install
