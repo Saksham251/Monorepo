@@ -28,5 +28,16 @@ jobs:
                 tags: saksham251/todo-app-backend:${{github.sha}}
                 build-args: |
                   DB_URL=${{ secrets.DATABASE_URL }}
-            
+            - run: |
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" > saksham_aws.pem
+                chmod 600 saksham_aws.pem
+                ssh -i saksham_aws.pem -o StrictHostKeyChecking=no ubuntu@13.202.34.192 << 'EOF'
+                echo "Stopping old container if running..."
+                docker stop todo_backend || true
+                docker rm todo_backend || true
+                echo "Pulling new image..."
+                docker pull saksham251/todo-app-backend:${{ github.sha }}
+                echo "Starting new container..."
+                docker run -d --name todo_backend -p 3002:3002 saksham251/todo-app-backend:${{ github.sha }}
+                EOF
      
